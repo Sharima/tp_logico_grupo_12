@@ -1,25 +1,18 @@
 -- TP funcional 2018 
-type cantPosicion = Int
-type A = Int
-type B = Int
-type etiqueta = String
-
-data Microprocesador = Microprocesador CantPosicion A B etiqueta deriving (Show)
-
-data xT8088= Microprocesador = Microprocesador (0 0 0 _)
+data Microprocesador = Microprocesador {cantPosicion:: Int, contA:: Int, contB:: Int, progCounter:: Int, etiqueta::String} deriving (Show)
+xT8088 = Microprocesador {cantPosicion=0, contA=0, contB=0}
 
 
+nop (Microprocesador cantPosicion contA contB progCounter etiqueta) = Microprocesador cantPosicion contA contB (progCounter + 1) etiqueta
 
+add (Microprocesador cantPosicion contA contB progCounter etiqueta) = Microprocesador cantPosicion (contA + contB) 0 progCounter etiqueta
 
-add (Microprocesador CantPosicion A B etiqueta) = Microprocesador CantPosicion (A+B) 0 etiqueta
+div (Microprocesador cantPosicion contA contB progCounter etiqueta) = Microprocesador cantPosicion (div contA contB) 0 progCounter etiqueta
 
-div (Microprocesador CantPosicion A B etiqueta) = Microprocesador CantPosicion (A div B) 0 etiqueta
+swap (Microprocesador cantPosicion contA contB progCounter etiqueta) = Microprocesador cantPosicion contB contA progCounter etiqueta
 
-swap (Microprocesador CantPosicion A B etiqueta) = Microprocesador CantPosicion B A etiqueta
-
-lodAddr (Microprocesador CantPosicion A B etiqueta) addr = Microprocesador CantPosicion addr B etiqueta
+lodAddr (Microprocesador cantPosicion contA contB progCounter etiqueta) addr = Microprocesador cantPosicion addr contB progCounter etiqueta
 
 strAddrVal val addr= addr
 
-lodvVal (Microprocesador CantPosicion A B etiqueta) val = Microprocesador CantPosicion val B etiqueta
- 
+lodvVal (Microprocesador cantPosicion contA contB progCounter etiqueta) val = Microprocesador cantPosicion val contB progCounter etiqueta
