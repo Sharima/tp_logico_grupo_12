@@ -1,6 +1,16 @@
 -- TP funcional 2018 
 import Text.Show.Functions
 import Data.List
+-- Otro Data--
+{-data Microprocesador = Microprocesador {
+  memoria :: Int,
+  acumulador :: (Int, Int)
+  programCounter :: Int
+  mensajeError:: String
+  }
+  xt8088 = Microprocesador 0 (0,0) 0 ""
+  -}
+
 
 data Microprocesador = Microprocesador {cantPosicion:: Int, contA:: Int, contB:: Int, progCounter:: Int, etiqueta::String} deriving (Show)
 xT8088 = Microprocesador {cantPosicion=0, contA=0, contB=0}
