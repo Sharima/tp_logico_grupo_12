@@ -1,46 +1,37 @@
 -- TP funcional 2018 
 import Text.Show.Functions
 import Data.List
--- Otro Data--
-{-data Microprocesador = Microprocesador {
-  memoria :: [Int],
-  acumulador :: (Int, Int)
-  programCounter :: Int
-  mensajeError:: String
-  }
-  xt8088 = Microprocesador [} (0,0) 0 ""
-  
-nop (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError)= (Microprocesador memoria acumuladorA acumuladorB (programCounter +1) mensajeDeError)
-lodv val (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError)= (Microprocesador memoria val acumuladorB programCounter mensajeDeError)
-swap (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError)= (Microprocesador memoria acumuladorB acumuladorA programCounter mensajeDeError)
-add (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError)= (Microprocesador memoria (acumuladorA + acumuladorB) 0 programCounter mensajeDeError)
 
-(nop.nop.nop) xt8088
+--3.1.1 Punto 1: Modelar micro
+data Microprocesador = Microprocesador {memoria::[Int], contA:: Int, contB:: Int, progCounter:: Int, mensajeError::String} deriving (Show)
 
-cargarValorEnContador val unMicroprocesador = (nop.swap.nop.lodv val) unMicroprocesador
-cargarValorYSumar val unMicroprocesador = (nop.add.nop.lodv val) unMicroprocesador
+--3.1.2 Punto 1: Modelar micro
+xT8088 = Microprocesador {memoria=[0], contA=0, contB=0, progCounter=0, mensajeError=""}
 
-sumarAcumuladores valor1 valor2 unMicroprocesador = (cargarValorYSumar valor2.cargarValorEnContador valor1) unMicroprocesador
+--3.2.1 Punto 2
+nop (Microprocesador memoria contA contB progCounter mensajeError) = Microprocesador memoria contA contB (progCounter + 1) mensajeError
+{-3.2.1 Punto 2
+(nop.nop.nop) xT8088
+En este punto interviene el concepto de composicion.-}
 
-sumarAcumuladores2 valor1 valor2 = cargarValorYSumar valor2.cargarValorEnContador valor1
+--3.3.1 Punto 3
+lodv (Microprocesador memoria contA contB progCounter mensajeError) val = Microprocesador memoria val contB progCounter mensajeError
+swap (Microprocesador memoria contA contB progCounter mensajeError) = Microprocesador memoria contB contA progCounter mensajeError
+add (Microprocesador memoria contA contB progCounter mensajeError) = Microprocesador memoria (contA + contB) 0 progCounter mensajeError
 
-  -}
+{-3.3.2 Punto 3
+nop (add (nop (lodv (nop (swap (nop (lodv xT8088 10)))) 22)))-}
 
 
-data Microprocesador = Microprocesador {cantPosicion:: Int, contA:: Int, contB:: Int, progCounter:: Int, etiqueta::String} deriving (Show)
-xT8088 = Microprocesador {cantPosicion=0, contA=0, contB=0}
+--3.4.1 Punto 4
+diV (Microprocesador memoria contA contB progCounter mensajeError) | contB /= 0 = Microprocesador memoria (div contA contB) 0 progCounter mensajeError
+																	| otherwise = Microprocesador memoria 0 0 progCounter "DIVISION BY ZERO"
+																	
+str (Microprocesador memoria contA contB progCounter mensajeError) val addr= (Microprocesador () contA contB progCounter val)
+agregarPosicion val addr memoria = [x/x<-memoria,(!!val) memoria x==addr]
 
 
-nop (Microprocesador cantPosicion contA contB progCounter etiqueta) = Microprocesador cantPosicion contA contB (progCounter + 1) etiqueta
+lod (Microprocesador memoria contA contB progCounter mensajeError) addr = Microprocesador memoria addr contB progCounter mensajeError
 
-add (Microprocesador cantPosicion contA contB progCounter etiqueta) = Microprocesador cantPosicion (contA + contB) 0 progCounter etiqueta
 
-div (Microprocesador cantPosicion contA contB progCounter etiqueta) = Microprocesador cantPosicion (div contA contB) 0 progCounter etiqueta
-
-swap (Microprocesador cantPosicion contA contB progCounter etiqueta) = Microprocesador cantPosicion contB contA progCounter etiqueta
-
-lodAddr (Microprocesador cantPosicion contA contB progCounter etiqueta) addr = Microprocesador cantPosicion addr contB progCounter etiqueta
-
-strAddrVal val addr= addr
-
-lodvVal (Microprocesador cantPosicion contA contB progCounter etiqueta) val = Microprocesador cantPosicion val contB progCounter etiqueta
+{-3.4.2 Punto 4
