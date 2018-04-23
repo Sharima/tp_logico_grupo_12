@@ -3,12 +3,27 @@ import Text.Show.Functions
 import Data.List
 -- Otro Data--
 {-data Microprocesador = Microprocesador {
-  memoria :: Int,
+  memoria :: [Int],
   acumulador :: (Int, Int)
   programCounter :: Int
   mensajeError:: String
   }
-  xt8088 = Microprocesador 0 (0,0) 0 ""
+  xt8088 = Microprocesador [} (0,0) 0 ""
+  
+nop (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError)= (Microprocesador memoria acumuladorA acumuladorB (programCounter +1) mensajeDeError)
+lodv val (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError)= (Microprocesador memoria val acumuladorB programCounter mensajeDeError)
+swap (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError)= (Microprocesador memoria acumuladorB acumuladorA programCounter mensajeDeError)
+add (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError)= (Microprocesador memoria (acumuladorA + acumuladorB) 0 programCounter mensajeDeError)
+
+(nop.nop.nop) xt8088
+
+cargarValorEnContador val unMicroprocesador = (nop.swap.nop.lodv val) unMicroprocesador
+cargarValorYSumar val unMicroprocesador = (nop.add.nop.lodv val) unMicroprocesador
+
+sumarAcumuladores valor1 valor2 unMicroprocesador = (cargarValorYSumar valor2.cargarValorEnContador valor1) unMicroprocesador
+
+sumarAcumuladores2 valor1 valor2 = cargarValorYSumar valor2.cargarValorEnContador valor1
+
   -}
 
 
