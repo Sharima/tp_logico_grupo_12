@@ -46,15 +46,22 @@ Microprocesador {memoria = [2,0], contA = 0, contB = 0, progCounter = 6, mensaje
 -}
 
 {- Casos de Prueba
-4. 1 (nop.nop.nop) xT8088
-
-
-4.3.2
-lod (Microprocesador (replicate 1024 0) 5 0 0 "") 2
-
-4.3.4
-xt80882 = Microprocesador (replicate 1024 0) 12 4 0 ""
-diV xt80882
-
+4.1 
+	*Main> (nop.nop.nop) xT8088
+	Microprocesador {memoria = [], contA = 0, contB = 0, progCounter = 3, mensajeError = ""}
+4.2.1 
+	*Main> xT8088
+	Microprocesador {memoria = [], contA = 0, contB = 0, progCounter = 0, mensajeError = ""}
+	*Main> lodv xT8088 5
+	Microprocesador {memoria = [], contA = 5, contB = 0, progCounter = 0, mensajeError = ""}
+4.2.2 
+	*Main> swap fp20
+	Microprocesador {memoria = [], contA = 24, contB = 7, progCounter = 0, mensajeError = ""}
+	*Main> add fp20
+	Microprocesador {memoria = [], contA = 31, contB = 0, progCounter = 0, mensajeError = ""}
+	*Main> 
+	
 
 -}
+
+
