@@ -28,7 +28,7 @@ sumarAcumuladores valor1 valor2 unMicroprocesador = (cargarValorYSumar valor2.ca
 -- También se lo puede realizando aplicando "Aplicación Parcial" eliminando el parámetro "unMicroProcesador"
 cargarValorEnContador2 val = (nop.swap.nop.lodv val)
 cargarValorYSumar2 val = (nop.add.nop.lodv val)
-sumarAcumuladores2 valor1 valor2 = cargarValorYSumar2 valor2.cargarValorEnContador2 valor1
+sumarDiezYVeintiDos valor1 valor2 = cargarValorYSumar2 valor2.cargarValorEnContador2 valor1
 
 --3.4.1 Punto 4
 diV (Microprocesador memoria contA contB progCounter mensajeError) | contB /= 0 = Microprocesador memoria (div contA contB) 0 progCounter mensajeError
