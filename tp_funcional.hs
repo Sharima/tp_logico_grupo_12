@@ -6,7 +6,9 @@ import Data.List
 data Microprocesador = Microprocesador {memoria::[Int], acumuladorA:: Int, acumuladorB:: Int, programCounter:: Int, mensajeDeError::String} deriving (Show)
 
 --3.1.2 Punto 1: Modelar micro
-xT8088 = Microprocesador [] 0 0 0 ""
+xt8088 = Microprocesador [] 0 0 0 ""
+at8086 = Microprocesador [1..20] 0 0 0 ""
+fp20 = Microprocesador [] 7 24 0 ""
 -- xt8088 = [] 0 0 0 ""
 --3.2.1 Punto 2
 nop (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) = Microprocesador memoria acumuladorA acumuladorB (programCounter + 1) mensajeDeError
@@ -42,7 +44,7 @@ Microprocesador {memoria = [], acumuladorA = 22, acumuladorB = 10, programCounte
 Microprocesador {memoria = [], acumuladorA = 32, acumuladorB = 0, programCounter = 4, mensajeDeError = ""} -}
 
 --3.4.1 Punto 4
-diV (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) | acumuladorB /= 0 = Microprocesador memoria (div acumuladorA acumuladorB) 0 programCounter mensajeDeError
+divide (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) | acumuladorB /= 0 = Microprocesador memoria (div acumuladorA acumuladorB) 0 programCounter mensajeDeError
  | otherwise = Microprocesador memoria 0 0 programCounter "DIVISION BY ZERO"
 
 str (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) addr val= (Microprocesador (agregarPosicion addr val memoria) acumuladorA acumuladorB programCounter mensajeDeError)
@@ -52,7 +54,7 @@ agregarPosicion addr val memoria = (take (addr-1) memoria) ++ [val] ++ drop (add
 lod (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) addr = Microprocesador memoria ((!!(addr -1)) memoria) acumuladorB programCounter mensajeDeError
 
 {-3.4.2 Punto 4 
-*Main> nop(diV(nop(lod(nop (swap (nop (lod (nop (str (nop(str xT8088 1 2))2 0)) 2))))1)))
+*Main> nop(divide(nop(lod(nop (swap (nop (lod (nop (str (nop(str xT8088 1 2))2 0)) 2))))1)))
 Microprocesador {memoria = [2,0], contA = 0, contB = 0, progCounter = 6, mensajeError = "DIVISION BY ZERO"}
 -}
 
