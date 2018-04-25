@@ -1,4 +1,5 @@
 -- TP funcional 2018 
+module TP where
 import Text.Show.Functions
 import Data.List
 
