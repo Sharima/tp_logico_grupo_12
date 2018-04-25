@@ -45,6 +45,20 @@ lod (Microprocesador memoria contA contB progCounter mensajeError) addr = Microp
 
 
 {- Casos de Prueba
-4. 1 (nop.nop.nop) xT8088
+4.1 
+	*Main> (nop.nop.nop) xT8088
+	Microprocesador {memoria = [], contA = 0, contB = 0, progCounter = 3, mensajeError = ""}
+4.2.1 
+	*Main> xT8088
+	Microprocesador {memoria = [], contA = 0, contB = 0, progCounter = 0, mensajeError = ""}
+	*Main> lodv xT8088 5
+	Microprocesador {memoria = [], contA = 5, contB = 0, progCounter = 0, mensajeError = ""}
+4.2.2 
+	*Main> swap fp20
+	Microprocesador {memoria = [], contA = 24, contB = 7, progCounter = 0, mensajeError = ""}
+	*Main> add fp20
+	Microprocesador {memoria = [], contA = 31, contB = 0, progCounter = 0, mensajeError = ""}
+	*Main> 
+	
 
 -}
