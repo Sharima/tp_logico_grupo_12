@@ -3,21 +3,21 @@ import Text.Show.Functions
 import Data.List
 
 --3.1.1 Punto 1: Modelar micro
-data Microprocesador = Microprocesador {memoria::[Int], contA:: Int, contB:: Int, progCounter:: Int, mensajeError::String} deriving (Show)
+data Microprocesador = Microprocesador {memoria::[Int], acumuladorA:: Int, acumuladorB:: Int, programCounter:: Int, mensajeDeError::String} deriving (Show)
 
 --3.1.2 Punto 1: Modelar micro
-xT8088 = Microprocesador {memoria=[], contA=0, contB=0, progCounter=0, mensajeError=""}
+xT8088 = Microprocesador [] 0 0 0 ""
 -- xt8088 = [] 0 0 0 ""
 --3.2.1 Punto 2
-nop (Microprocesador memoria contA contB progCounter mensajeError) = Microprocesador memoria contA contB (progCounter + 1) mensajeError
+nop (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) = Microprocesador memoria acumuladorA acumuladorB (programCounter + 1) mensajeDeError
 {-3.2.1 Punto 2
 (nop.nop.nop) xT8088
 En este punto interviene el concepto de composicion.-}
 
 --3.3.1 Punto 3
-lodv (Microprocesador memoria contA contB progCounter mensajeError) val = Microprocesador memoria val contB progCounter mensajeError
-swap (Microprocesador memoria contA contB progCounter mensajeError) = Microprocesador memoria contB contA progCounter mensajeError
-add (Microprocesador memoria contA contB progCounter mensajeError) = Microprocesador memoria (contA + contB) 0 progCounter mensajeError
+lodv val (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) = Microprocesador memoria val acumuladorB programCounter mensajeDeError
+swap (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) = Microprocesador memoria acumuladorB acumuladorA programCounter mensajeDeError
+add (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) = Microprocesador memoria (acumuladorA + acumuladorB) 0 programCounter mensajeDeError
 
 {-3.3.2 Punto 3
 nop (add (nop (lodv (nop (swap (nop (lodv xT8088 10)))) 22)))-}
@@ -31,14 +31,14 @@ cargarValorYSumar2 val = (nop.add.nop.lodv val)
 sumarDiezYVeintiDos valor1 valor2 = cargarValorYSumar2 valor2.cargarValorEnContador2 valor1
 
 --3.4.1 Punto 4
-diV (Microprocesador memoria contA contB progCounter mensajeError) | contB /= 0 = Microprocesador memoria (div contA contB) 0 progCounter mensajeError
-																	| otherwise = Microprocesador memoria 0 0 progCounter "DIVISION BY ZERO"
-																	
-str (Microprocesador memoria contA contB progCounter mensajeError) addr val= (Microprocesador (agregarPosicion addr val memoria) contA contB progCounter mensajeError)
+diV (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) | acumuladorB /= 0 = Microprocesador memoria (div acumuladorA acumuladorB) 0 programCounter mensajeDeError
+ | otherwise = Microprocesador memoria 0 0 programCounter "DIVISION BY ZERO"
+
+str (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) addr val= (Microprocesador (agregarPosicion addr val memoria) acumuladorA acumuladorB programCounter mensajeDeError)
 
 agregarPosicion addr val memoria = (take (addr-1) memoria) ++ [val] ++ drop (addr-1) memoria
 
-lod (Microprocesador memoria contA contB progCounter mensajeError) addr = Microprocesador memoria ((!!(addr -1)) memoria) contB progCounter mensajeError
+lod (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) addr = Microprocesador memoria ((!!(addr -1)) memoria) acumuladorB programCounter mensajeDeError
 
 {-3.4.2 Punto 4 
 *Main> nop(diV(nop(lod(nop (swap (nop (lod (nop (str (nop(str xT8088 1 2))2 0)) 2))))1)))
