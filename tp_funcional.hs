@@ -40,9 +40,10 @@ agregarPosicion addr val memoria = (take (addr-1) memoria) ++ [val] ++ drop (add
 
 lod (Microprocesador memoria contA contB progCounter mensajeError) addr = Microprocesador memoria ((!!(addr -1)) memoria) contB progCounter mensajeError
 
-{-3.4.2 Punto 4 -}
-
-
+{-3.4.2 Punto 4 
+*Main> nop(diV(nop(lod(nop (swap (nop (lod (nop (str (nop(str xT8088 1 2))2 0)) 2))))1)))
+Microprocesador {memoria = [2,0], contA = 0, contB = 0, progCounter = 6, mensajeError = "DIVISION BY ZERO"}
+-}
 
 {- Casos de Prueba
 4. 1 (nop.nop.nop) xT8088
