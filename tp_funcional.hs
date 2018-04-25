@@ -38,7 +38,7 @@ str (Microprocesador memoria contA contB progCounter mensajeError) addr val= (Mi
 
 agregarPosicion addr val memoria = (take (addr-1) memoria) ++ [val] ++ drop (addr-1) memoria
 
-lod (Microprocesador memoria contA contB progCounter mensajeError) addr = Microprocesador memoria addr contB progCounter mensajeError
+lod (Microprocesador memoria contA contB progCounter mensajeError) addr = Microprocesador memoria ((!!(addr -1)) memoria) contB progCounter mensajeError
 
 {-3.4.2 Punto 4 -}
 
