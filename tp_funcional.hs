@@ -6,7 +6,7 @@ import Data.List
 data Microprocesador = Microprocesador {memoria::[Int], contA:: Int, contB:: Int, progCounter:: Int, mensajeError::String} deriving (Show)
 
 --3.1.2 Punto 1: Modelar micro
-xT8088 = Microprocesador {memoria=[0], contA=0, contB=0, progCounter=0, mensajeError=""}
+xT8088 = Microprocesador {memoria=[], contA=0, contB=0, progCounter=0, mensajeError=""}
 -- xt8088 = [] 0 0 0 ""
 --3.2.1 Punto 2
 nop (Microprocesador memoria contA contB progCounter mensajeError) = Microprocesador memoria contA contB (progCounter + 1) mensajeError
