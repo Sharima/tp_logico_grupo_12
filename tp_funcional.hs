@@ -64,4 +64,24 @@ Microprocesador {memoria = [2,0], contA = 0, contB = 0, progCounter = 6, mensaje
 
 -}
 
+{-Punto 5: desde 5.1.1 a 5.1.4
+Tal como definimos el Data Microprocesador, cada parámetro que toma el Microprocesador se lo puede utilizar como función para poder
+consultar el valor de cualquier parámetro que conforma el Microprocesador, por ejemplo:
+
+*Main> memoria at8086
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
+*Main> acumuladorA at8086
+0
+*Main> acumuladorB at8086
+0
+*Main> programCounter at8086
+0
+*Main> mensajeDeError at8086
+""
+*Main> show at8086
+"Microprocesador {memoria = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], acumuladorA = 0, acumuladorB = 0, programCounter = 0, mensajeDeError = \"\"}"
+*Main> 
+-}
+
 
