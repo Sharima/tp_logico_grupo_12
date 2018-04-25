@@ -11,7 +11,9 @@ xT8088 = Microprocesador [] 0 0 0 ""
 --3.2.1 Punto 2
 nop (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) = Microprocesador memoria acumuladorA acumuladorB (programCounter + 1) mensajeDeError
 {-3.2.1 Punto 2
-(nop.nop.nop) xT8088
+*Main> (nop.nop.nop) xT8088
+Microprocesador {memoria = [], acumuladorA = 0, acumuladorB = 0, programCounter = 3, mensajeDeError = ""}
+
 En este punto interviene el concepto de composicion.-}
 
 --3.3.1 Punto 3
@@ -29,6 +31,15 @@ sumarAcumuladores valor1 valor2 unMicroprocesador = (cargarValorYSumar valor2.ca
 cargarValorEnContador2 val = (nop.swap.nop.lodv val)
 cargarValorYSumar2 val = (nop.add.nop.lodv val)
 sumarDiezYVeintiDos valor1 valor2 = cargarValorYSumar2 valor2.cargarValorEnContador2 valor1
+{- Llamadas individuales a las funciones
+*Main> nop (lodv 10 xT8088)
+Microprocesador {memoria = [], acumuladorA = 10, acumuladorB = 0, programCounter = 1, mensajeDeError = ""}
+*Main> nop (swap (nop (lodv 10 xT8088)))
+Microprocesador {memoria = [], acumuladorA = 0, acumuladorB = 10, programCounter = 2, mensajeDeError = ""}
+*Main> nop (lodv 22(nop (swap (nop (lodv 10 xT8088)))))
+Microprocesador {memoria = [], acumuladorA = 22, acumuladorB = 10, programCounter = 3, mensajeDeError = ""}
+*Main> nop (add (nop (lodv 22(nop (swap (nop (lodv 10 xT8088)))))))
+Microprocesador {memoria = [], acumuladorA = 32, acumuladorB = 0, programCounter = 4, mensajeDeError = ""} -}
 
 --3.4.1 Punto 4
 diV (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) | acumuladorB /= 0 = Microprocesador memoria (div acumuladorA acumuladorB) 0 programCounter mensajeDeError
