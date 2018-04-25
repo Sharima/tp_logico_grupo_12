@@ -34,11 +34,17 @@ sumarAcumuladores2 valor1 valor2 = cargarValorYSumar2 valor2.cargarValorEnContad
 diV (Microprocesador memoria contA contB progCounter mensajeError) | contB /= 0 = Microprocesador memoria (div contA contB) 0 progCounter mensajeError
 																	| otherwise = Microprocesador memoria 0 0 progCounter "DIVISION BY ZERO"
 																	
-str (Microprocesador memoria contA contB progCounter mensajeError) val addr= (Microprocesador () contA contB progCounter val)
-agregarPosicion val addr memoria = [x/x<-memoria,(!!val) memoria x==addr]
+str (Microprocesador memoria contA contB progCounter mensajeError) addr val= (Microprocesador (agregarPosicion addr val memoria) contA contB progCounter mensajeError)
 
+agregarPosicion addr val memoria = (take (addr-1) memoria) ++ [val] ++ drop (addr-1) memoria
 
 lod (Microprocesador memoria contA contB progCounter mensajeError) addr = Microprocesador memoria addr contB progCounter mensajeError
 
+{-3.4.2 Punto 4 -}
 
-{-3.4.2 Punto 4
+
+
+{- Casos de Prueba
+4. 1 (nop.nop.nop) xT8088
+
+-}
