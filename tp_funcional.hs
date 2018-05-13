@@ -4,7 +4,11 @@ import Text.Show.Functions
 import Data.List
 
 --3.1.1 Punto 1: Modelar micro
-data Microprocesador = Microprocesador {memoria::[Int], acumuladorA:: Int, acumuladorB:: Int, programCounter:: Int, mensajeDeError::String} deriving (Show)
+data Microprocesador = Microprocesador {memoria::[Int], 
+					acumuladorA:: Int, 
+					acumuladorB:: Int, 
+					programCounter:: Int, 
+					mensajeDeError::String} deriving (Show)
 
 --3.1.2 Punto 1: Modelar micro
 xt8088 = Microprocesador [] 0 0 0 ""
@@ -48,11 +52,12 @@ Microprocesador {memoria = [], acumuladorA = 32, acumuladorB = 0, programCounter
 divide unMicroP | (acumuladorB unMicroP) /= 0 = unMicroP {acumuladorA = div (acumuladorA unMicroP) (acumuladorB unMicroP), acumuladorB = 0 }
  | otherwise = unMicroP {mensajeDeError = "DIVISION BY ZERO"}
 
-str unMicroP addr val= unMicroP {memoria = agregarPosicion addr val (memoria unMicroP)}
+str addr val unMicroP = unMicroP {memoria = agregarPosicion addr val (memoria unMicroP)}
 
 agregarPosicion addr val memoria = (take (addr-1) memoria) ++ [val] ++ drop (addr-1) memoria
 
-lod (Microprocesador memoria acumuladorA acumuladorB programCounter mensajeDeError) addr = Microprocesador memoria ((!!(addr -1)) memoria) acumuladorB programCounter mensajeDeError
+lod addr unMicroP | length (memoria unMicroP) == 0 = unMicroP {acumuladorA = 0}
+ |otherwise = unMicroP {acumuladorA = (!!(addr -1)) (memoria unMicroP)}
 
 {-3.4.2 Punto 4 
 *Main> nop(divide(nop(lod(nop (swap (nop (lod (nop (str (nop(str xt8088 1 2))2 0)) 2))))1)))
