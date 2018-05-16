@@ -41,10 +41,12 @@ lod addr unMicroP | length (memoria unMicroP) == 0 = unMicroP {acumuladorA = 0}
  
 ejecutarListaProgramas unMicroP = foldl unMicroP (programas unMicroP)
  
---detectaError unMicroP |(mensajeDeError = []
---					| otherwise = False
+ejecutarListaProgramas unMicroP = map (ejecutarPrograma unMicroP) (programas unMicroP)
 
---ejecutarPrograma unPrograma unMicroP= unPrograma unMicroP
+ejecutarPrograma unMicroP unPrograma= unPrograma unMicroP
+ 
+detectaError unMicroP | (length (mensajeDeError unMicroP)) == 0  = True
+	|otherwise = False
 
 -- Otros Puntos del TP
 {-3.2.1 Punto 2
