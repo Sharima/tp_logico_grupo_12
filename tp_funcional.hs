@@ -3,30 +3,54 @@ module TP where
 import Text.Show.Functions
 import Data.List
 
---3.1.1 Punto 1: Modelar micro
+-- Definicion de tipo de datos
+type Programa= Microprocesador -> Microprocesador
 data Microprocesador = Microprocesador {memoria::[Int], 
-					acumuladorA:: Int, 
-					acumuladorB:: Int, 
-					programCounter:: Int, 
-					mensajeDeError::String} deriving (Show)
+										acumuladorA:: Int, 
+										acumuladorB:: Int, 
+										programCounter:: Int, 
+										mensajeDeError::String, 
+										programas::[Programa]} deriving (Show)
 
---3.1.2 Punto 1: Modelar micro
-xt8088 = Microprocesador [] 0 0 0 ""
-at8086 = Microprocesador [1..20] 0 0 0 ""
-fp20 = Microprocesador [] 7 24 0 ""
--- xt8088 = [] 0 0 0 ""
---3.2.1 Punto 2
-nop unMicroP = unMicroP {programCounter = programCounter unMicroP + 1}
+xt8088 = Microprocesador [] 0 0 0 "" []
+at8086 = Microprocesador [1..20] 0 0 0 "" []
+fp20 = Microprocesador [] 7 24 0 "" [nop]
 
+
+-- Definicion de Funciones
+programa1 = [(lodv 10), swap, (lodv 22), add]
+programa2 = [(str 1 2), (str 2 0), (lod 2), swap, (lod 1), divide]
+
+nop unMicroP = nop (unMicroP {programCounter = programCounter unMicroP + 1})
+
+lodv val unMicroP = nop (unMicroP {acumuladorA= val})
+
+swap unMicroP = nop (unMicroP {acumuladorA= acumuladorB unMicroP, acumuladorB= acumuladorA unMicroP })
+
+add unMicroP = nop (unMicroP {acumuladorA = (acumuladorA unMicroP) + (acumuladorB unMicroP), acumuladorB = 0 })
+
+divide unMicroP | (acumuladorB unMicroP) /= 0 = unMicroP {acumuladorA = div (acumuladorA unMicroP) (acumuladorB unMicroP), acumuladorB = 0 }
+ | otherwise = unMicroP {mensajeDeError = "DIVISION BY ZERO"}
+
+str addr val unMicroP = unMicroP {memoria = agregarPosicion addr val (memoria unMicroP)}
+
+agregarPosicion addr val memoria = (take (addr-1) memoria) ++ [val] ++ drop (addr-1) memoria
+
+lod addr unMicroP | length (memoria unMicroP) == 0 = unMicroP {acumuladorA = 0}
+ |otherwise = unMicroP {acumuladorA = (!!(addr -1)) (memoria unMicroP)}
+ 
+ejecutarListaProgramas unMicroP = foldl unMicroP (programas unMicroP)
+ 
+--detectaError unMicroP |(mensajeDeError = []
+--					| otherwise = False
+
+--ejecutarPrograma unPrograma unMicroP= unPrograma unMicroP
+
+-- Otros Puntos del TP
 {-3.2.1 Punto 2
 *Main> (nop.nop.nop) xt8088
 Microprocesador {memoria = [], acumuladorA = 0, acumuladorB = 0, programCounter = 3, mensajeDeError = ""}
 En este punto interviene el concepto de composicion.-}
-
---3.3.1 Punto 3
-lodv val unMicroP = unMicroP {acumuladorA= val} 
-swap unMicroP = unMicroP {acumuladorA= acumuladorB unMicroP, acumuladorB= acumuladorA unMicroP }
-add unMicroP = unMicroP {acumuladorA = (acumuladorA unMicroP) + (acumuladorB unMicroP), acumuladorB = 0 } 
 
 {-3.3.2 Punto 3
 nop (add (nop (lodv (nop (swap (nop (lodv xt8088 10)))) 22)))-}
@@ -47,17 +71,6 @@ Microprocesador {memoria = [], acumuladorA = 0, acumuladorB = 10, programCounter
 Microprocesador {memoria = [], acumuladorA = 22, acumuladorB = 10, programCounter = 3, mensajeDeError = ""}
 *Main> nop (add (nop (lodv 22(nop (swap (nop (lodv 10 xt8088)))))))
 Microprocesador {memoria = [], acumuladorA = 32, acumuladorB = 0, programCounter = 4, mensajeDeError = ""} -}
-
---3.4.1 Punto 4
-divide unMicroP | (acumuladorB unMicroP) /= 0 = unMicroP {acumuladorA = div (acumuladorA unMicroP) (acumuladorB unMicroP), acumuladorB = 0 }
- | otherwise = unMicroP {mensajeDeError = "DIVISION BY ZERO"}
-
-str addr val unMicroP = unMicroP {memoria = agregarPosicion addr val (memoria unMicroP)}
-
-agregarPosicion addr val memoria = (take (addr-1) memoria) ++ [val] ++ drop (addr-1) memoria
-
-lod addr unMicroP | length (memoria unMicroP) == 0 = unMicroP {acumuladorA = 0}
- |otherwise = unMicroP {acumuladorA = (!!(addr -1)) (memoria unMicroP)}
 
 {-3.4.2 Punto 4 
 *Main> nop(divide(nop(lod(nop (swap (nop (lod (nop (str (nop(str xt8088 1 2))2 0)) 2))))1)))
