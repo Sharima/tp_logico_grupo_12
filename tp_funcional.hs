@@ -48,7 +48,7 @@ ejecutarPrograma unMicroP unPrograma= unPrograma unMicroP
 detectaError unMicroP | (length (mensajeDeError unMicroP)) == 0  = True
 	|otherwise = False
 
-IFNZ unMicroP| acumuladorA == 0 =  ejecutarListaProgramas unMicroP
+ifnz unMicroP| acumuladorA == 0 =  ejecutarListaProgramas unMicroP
 			|otherwise = unMicroP
 
 -- Otros Puntos del TP
