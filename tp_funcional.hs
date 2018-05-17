@@ -42,7 +42,7 @@ lod addr unMicroP | length (memoria unMicroP) == 0 = unMicroP {acumuladorA = 0}
  
 ejecutarListaProgramas unMicroP = foldl unMicroP (programas unMicroP)
  
-ejecutarListaProgramas unMicroP = map (ejecutarPrograma unMicroP) (programas unMicroP)
+ejecutarListaProgramas unMicroP = foldl (ejecutarPrograma unMicroP) (programas unMicroP)
 
 ejecutarPrograma unMicroP unPrograma= unPrograma unMicroP
  
