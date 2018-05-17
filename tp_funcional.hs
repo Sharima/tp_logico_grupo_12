@@ -51,6 +51,14 @@ detectaError unMicroP | (length (mensajeDeError unMicroP)) == 0  = True
 ifnz unMicroP| acumuladorA == 0 =  ejecutarListaProgramas unMicroP
 			|otherwise = unMicroP
 
+
+depurarPrograma unMicroP = map (validaInecesario.ejecutarPrograma unMicroP) (programas unMicroP)
+
+verificarPrograma unMicroP unPrograma|(unPrograma unMicroP)== memoria= [] && acumuladorA=0 && acumuladorB =0 && progCounter = 0 && mensajeDeError = [] && programas == [] = True
+| otherwise = False
+
+memoriaOrdenada unMicroP = foldl 0 (>) memoria
+
 -- Otros Puntos del TP
 {-3.2.1 Punto 2
 *Main> (nop.nop.nop) xt8088
