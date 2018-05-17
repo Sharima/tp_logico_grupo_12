@@ -48,6 +48,9 @@ ejecutarPrograma unMicroP unPrograma= unPrograma unMicroP
 detectaError unMicroP | (length (mensajeDeError unMicroP)) == 0  = True
 	|otherwise = False
 
+IFNZ unMicroP| acumuladorA == 0 =  ejecutarListaProgramas unMicroP
+			|otherwise = unMicroP
+
 -- Otros Puntos del TP
 {-3.2.1 Punto 2
 *Main> (nop.nop.nop) xt8088
