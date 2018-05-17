@@ -15,7 +15,7 @@ data Microprocesador = Microprocesador {memoria::[Int],
 xt8088 = Microprocesador [] 0 0 0 "" []
 at8086 = Microprocesador [1..20] 0 0 0 "" []
 fp20 = Microprocesador [] 7 24 0 "" [nop]
-infi20= Microprocesador [1..] 7 24 0 "" []
+infi20= Microprocesador [0..] 7 24 0 "" []
 
 
 -- Definicion de Funciones
